@@ -117,16 +117,19 @@ extension Sync {
     public class func changes(_ changes: [[String: Any]], inEntityNamed entityName: String, inContext context: NSManagedObjectContext, completion: ((_ error: NSError?) -> Void)?) {
         self.changes(changes, inEntityNamed: entityName, predicate: nil, parent: nil, parentRelationship: nil, inContext: context, operations: .all, completion: completion)
     }
-
+    
     public class func changes(_ changes: [[String: Any]], inEntityNamed entityName: String, predicate: NSPredicate?, parent: NSManagedObject?, parentRelationship: NSRelationshipDescription?, inContext context: NSManagedObjectContext, operations: Sync.OperationOptions, completion: ((_ error: NSError?) -> Void)?) {
-
+        let startTime = Date()
+        
+        debugPrint("Starting changes for \(entityName)")
         var error: NSError?
         do {
             try self.changes(changes, inEntityNamed: entityName, predicate: predicate, parent: parent, parentRelationship: parentRelationship, inContext: context, operations: operations, shouldContinueBlock: nil, objectJSONBlock: nil)
         } catch let syncError as NSError {
             error = syncError
         }
-
+        
+        debugPrint("Changes complete for \(entityName) elapsed time - \(Date().timeIntervalSince(startTime)) sec")
         if TestCheck.isTesting {
             completion?(error)
         } else {

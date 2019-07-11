@@ -53,7 +53,7 @@ class DataFilter: NSObject {
         let localPrimaryKeysSet = Set(localPrimaryKeys)
 
         if operations.contains(.delete) {
-            var deletedObjectIDs = Array(localPrimaryKeysSet.subtracting(remotePrimaryKeysSet))
+            let deletedObjectIDs = Array(localPrimaryKeysSet.subtracting(remotePrimaryKeysSet))
             
             for fetchedID in deletedObjectIDs {
                 let objectID = primaryKeysAndObjectIDs[fetchedID]!
@@ -63,7 +63,7 @@ class DataFilter: NSObject {
         }
 
         if operations.contains(.insert) {
-            var insertedObjectIDs = Array(remotePrimaryKeysSet.subtracting(localPrimaryKeys))
+            let insertedObjectIDs = Array(remotePrimaryKeysSet.subtracting(localPrimaryKeys))
             
             for fetchedID in insertedObjectIDs {
                 let objectDictionary = remotePrimaryKeysAndChanges[fetchedID]!
